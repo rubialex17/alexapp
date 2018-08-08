@@ -1,38 +1,34 @@
+// In App.js in a new project
+
 import React from 'react';
-import { StyleSheet, FlatList, Image, Text, View } from 'react-native';
+import { Button, View, Text } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import HomeScreen from './HomeScreen'; 
+import DetailsScreen from './DetailsScreen'; 
+import YoutubeVideo from './YouTubeVideo'; 
 
 export default class App extends React.Component {
   render() {
-    return (
-      <View style={{flex: 1, backgroundColor: 'black'}} >
-        <View style={{flex: 1}}>
-        </View>
-        <View style={{flex: 3}}>
-          <Image style={styles.canvas} resizeMode="contain" source={require('./images/channel1.jpg')} />
-        </View>
-        <View style={{flex: 3}}>
-          <Image style={styles.canvas} resizeMode="contain" source={require('./images/channel2.jpg')} />
-        </View>        
-      </View>
-    );
+    return <RootStack />;
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-   flex: 1,
-   paddingTop: 22
+const RootStack = createStackNavigator(
+  {
+    Home: HomeScreen,
+    Details: DetailsScreen,
+    YouTubeVideo: YoutubeVideo,
   },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
-  canvas: {
-    width: '100%',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  },
-});
+  {
+    initialRouteName: 'Home',
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#fff',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
+  }
+);
