@@ -23,7 +23,7 @@ class YouTubeVideo extends React.Component{
                 play={true}             
                 fullscreen={true}       
                 loop={false}            
-                apiKey={'AIzaSyAKWtp_4IokzoKZu5u3mg00BC7FTia95z4'}
+                apiKey={''}
                 onReady={e => this.setState({ isReady: true })}
                 onChangeState={e => this.setState({ status: e.state })}
                 onChangeQuality={e => this.setState({ quality: e.quality })}
