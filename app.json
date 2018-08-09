@@ -1,4 +1,6 @@
 {
+  "name": "alexapp",
+  "displayName": "alexapp",
   "expo": {
     "sdkVersion": "27.0.0"
   }

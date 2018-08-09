@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { 
+import {
+  ActivityIndicator,
   Image, 
   TouchableHighlight, 
   TouchableOpacity, 
@@ -19,7 +20,8 @@ const apiKey = 'AIzaSyAKWtp_4IokzoKZu5u3mg00BC7FTia95z4'
 const results = 30
 
 class DetailsScreen extends React.Component {
-  
+  channelImages = {'DjMaRiiO': require('./images/channel1.jpg'), 'DjMaRiiO HD': require('./images/channel2.jpg')}
+
   static navigationOptions = {
     headerStyle: {
       backgroundColor: '#fff'
@@ -52,13 +54,25 @@ class DetailsScreen extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      data: []
+      channelImage: 'channel1.jpg',
+      imageUrl: this.channelImages['DjMaRiiO'],
+      data: [],
+      loading: true
     }
   }
   static navigationOptions = ({ navigation }) => {
     channelId = navigation.getParam('channelId', null);
   };
+
+  
   componentDidMount(){
+    this.fetchVideoFeed('UCi7TVXyvrIwqeS9tfYD8UDA', 'DjMaRiiO')
+  }
+
+  fetchVideoFeed(channelId, channelName) {
+    this.setState({
+      loading: true
+    }) 
     fetch(`https://www.googleapis.com/youtube/v3/search/?key=${apiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=${results}`)
     //fetch('https://www.googleapis.com/youtube/v3/search/?key=AIzaSyBJ3ntReiv0L19H2RoYW62LpRdIuyPhIpw&channelId=UCQzdMyuz0Lf4zo4uGcEujFw&part=snippet,id&order=date&maxResults=30')
     .then(res => res.json())
@@ -68,7 +82,9 @@ class DetailsScreen extends React.Component {
         videoId.push(item)
       })
       this.setState({
-        data: videoId
+        data: videoId,
+        imageUrl: this.channelImages[channelName],
+        loading: false
       }) 
     })
     .catch(error => {
@@ -77,53 +93,48 @@ class DetailsScreen extends React.Component {
   }
 
   render() {
-
-    const {navigate} = this.props.navigation
+    const { navigate } = this.props.navigation
+    const { channelId, channelImage, loading } = this.state 
+    
     return (
       <View style={styles.container}>
-        <ScrollView>
+        {loading ? (
           <View style={styles.body}>
-            {this.state.data.map((item, i) => 
-           	<TouchableHighlight 
-              key={item.id.videoId} 
-              onPress={() => navigate('YouTubeVideo', {youtubeId: item.id.videoId})}>
-              {/* onPress={() => this.props.navigation.navigate('YoutubeVideo', {youtubeId: item.id.videoId})}> */}
-              <View style={styles.vids}>
-                <Image 
-                  source={{uri: item.snippet.thumbnails.medium.url}} 
-                  style={{width: 320, height: 180}}/>
-                <View style={styles.vidItems}>
-                  <Image 
-                    source={require('./images/channel1.jpg')} 
-                    style={{width: 40, height: 40, borderRadius: 20, marginRight: 5}}/>
-                  <Text style={styles.vidText}>{item.snippet.title}</Text>
-                  <Icon name='more-vert' size={20} color='#555'/> 
-                </View>
-              </View>
-            </TouchableHighlight>
-            )}
+            <ActivityIndicator />
           </View>
-        </ScrollView>
+        ) : (
+          <ScrollView>
+            <View style={styles.body}>
+              {this.state.data.map((item, i) => 
+              <TouchableHighlight 
+                key={item.id.videoId} 
+                onPress={() => navigate('YouTubeVideo', {youtubeId: item.id.videoId})}>
+                {/* onPress={() => this.props.navigation.navigate('YoutubeVideo', {youtubeId: item.id.videoId})}> */}
+                <View style={styles.vids}>
+                  <Image 
+                    source={{uri: item.snippet.thumbnails.medium.url}} 
+                    style={{width: 320, height: 180}}/>
+                  <View style={styles.vidItems}>
+                    <Image 
+                      source={this.state.imageUrl}
+                      style={{width: 40, height: 40, borderRadius: 20, marginRight: 5}}/>
+                    <Text style={styles.vidText}>{item.snippet.title}</Text>
+                    <Icon name='more-vert' size={20} color='#555'/> 
+                  </View>
+                </View>
+              </TouchableHighlight>
+              )}
+            </View>
+          </ScrollView>
+        )}
         <View style={styles.tabBar}>
-          <TouchableOpacity style={styles.tabItems}>
-            <Icon name='home' size={25} color='#444'/>
-            <Text style={styles.tabTitle}>Home</Text>
+        <TouchableOpacity style={styles.tabItems} onPress={()=>{this.fetchVideoFeed('UCi7TVXyvrIwqeS9tfYD8UDA', 'DjMaRiiO' )}}>
+          <Image source={require('./images/channel1.jpg')} style={{width: 40, height: 40, borderRadius: 20, marginRight: 5}}/>
+            <Text style={styles.tabTitle}>DjMaRiiO</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItems}>
-            <Icon name='whatshot' size={25} color='#444'/>
-            <Text style={styles.tabTitle}>Trending</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItems}>
-            <Icon name='subscriptions' size={25} color='#444'/>
-            <Text style={styles.tabTitle}>Subscriptions</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItems}>
-            <Icons name='bell' size={25} color='#444'/>
-            <Text style={styles.tabTitle}>Activity</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItems}>
-            <Icon name='folder' size={25} color='#444'/>
-            <Text style={styles.tabTitle}>Library</Text>
+          <TouchableOpacity style={styles.tabItems} onPress={()=>{this.fetchVideoFeed('UCEhV7Kms52H2HrdwthU2QmA', 'DjMaRiiO HD' )}}>
+            <Image source={require('./images/channel2.jpg')} style={{width: 40, height: 40, borderRadius: 20, marginRight: 5}}/>
+            <Text style={styles.tabTitle}>DjMaRiiO HD</Text>
           </TouchableOpacity>
         </View>
 	    </View>

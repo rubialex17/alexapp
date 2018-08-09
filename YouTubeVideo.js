@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { StackNavigator } from 'react-navigation'
 import YouTube from 'react-native-youtube'
+import { YouTubeStandaloneIOS } from 'react-native-youtube';
 
 class YouTubeVideo extends React.Component{
     static navigationOptions = {
