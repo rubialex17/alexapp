@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { createStackNavigator } from 'react-navigation';
 
-const apiKey = ''
+const apiKey = 'AIzaSyAKWtp_4IokzoKZu5u3mg00BC7FTia95z4'
 const results = 30
 
 class DetailsScreen extends React.Component {
