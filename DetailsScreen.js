@@ -15,56 +15,36 @@ import YouTubeVideo from './YouTubeVideo'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { createStackNavigator } from 'react-navigation';
+import Orientation from 'react-native-orientation';
 
-const apiKey = 'AIzaSyAKWtp_4IokzoKZu5u3mg00BC7FTia95z4'
+const apiKey = ''
 const results = 30
 
 class DetailsScreen extends React.Component {
   channelImages = {'DjMaRiiO': require('./images/channel1.jpg'), 'DjMaRiiO HD': require('./images/channel2.jpg')}
 
-  static navigationOptions = {
-    headerStyle: {
-      backgroundColor: '#fff'
-    },
-    headerLeft: (
-      <TouchableOpacity>
-        <Image 
-          style={{height: 22, width: 98, marginLeft: 25}} 
-          source={require('./images/banner1.png')} />
-      </TouchableOpacity>
-    ),
-    headerRight: (
-      <View style={{ flexDirection: 'row', marginRight: 20 }}>
-        <TouchableOpacity style={{paddingHorizontal: 5}}>
-          <Icon name='cast-connected' size={25} color={'#555'} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{paddingHorizontal: 5}}>
-          <Icon name='videocam' size={25} color={'#555'} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{paddingHorizontal: 5}}>
-          <Icon name='search' size={25} color={'#555'} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{paddingHorizontal: 5}}>
-          <Icon name='account-circle' size={25} color={'#555'}/>
-        </TouchableOpacity>
-      </View>
-    )
-  }
 
   constructor(props){
     super(props)
     this.state = {
+      name: 'DjMaRiiO',
       channelImage: 'channel1.jpg',
       imageUrl: this.channelImages['DjMaRiiO'],
       data: [],
       loading: true
     }
   }
-  static navigationOptions = ({ navigation }) => {
-    channelId = navigation.getParam('channelId', null);
-  };
-
   
+  static navigationOptions = {
+    headerTitle: 'DjMaRiiO APP',
+    headerStyle: {
+        backgroundColor: '#e62117'
+    }, 
+    headerTitleStyle: {
+        color: '#fff'
+    }
+}
+
   componentDidMount(){
     this.fetchVideoFeed('UCi7TVXyvrIwqeS9tfYD8UDA', 'DjMaRiiO')
   }
@@ -81,21 +61,24 @@ class DetailsScreen extends React.Component {
       res.items.forEach(item => {
         videoId.push(item)
       })
+      console.log(res);
       this.setState({
         data: videoId,
         imageUrl: this.channelImages[channelName],
-        loading: false
+        loading: false,
+        name: channelName
       }) 
     })
     .catch(error => {
       console.error(error)
     })
+    
   }
 
   render() {
     const { navigate } = this.props.navigation
     const { channelId, channelImage, loading } = this.state 
-    
+
     return (
       <View style={styles.container}>
         {loading ? (
@@ -108,7 +91,7 @@ class DetailsScreen extends React.Component {
               {this.state.data.map((item, i) => 
               <TouchableHighlight 
                 key={item.id.videoId} 
-                onPress={() => navigate('YouTubeVideo', {youtubeId: item.id.videoId})}>
+                onPress={() => navigate('YouTubeVideo', {youtubeId: item.id.videoId, videoTitle: item.snippet.title, imageUri: this.state.imageUrl})}>
                 {/* onPress={() => this.props.navigation.navigate('YoutubeVideo', {youtubeId: item.id.videoId})}> */}
                 <View style={styles.vids}>
                   <Image 
@@ -117,9 +100,8 @@ class DetailsScreen extends React.Component {
                   <View style={styles.vidItems}>
                     <Image 
                       source={this.state.imageUrl}
-                      style={{width: 40, height: 40, borderRadius: 20, marginRight: 5}}/>
+                      style={{width: 50, height: 50, borderRadius: 25, marginRight: 5, flex: 1}}/>
                     <Text style={styles.vidText}>{item.snippet.title}</Text>
-                    <Icon name='more-vert' size={20} color='#555'/> 
                   </View>
                 </View>
               </TouchableHighlight>
@@ -150,10 +132,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    padding: 30
+    borderBottomColor: '#000',
+    padding: 0
   },
   vids: {
-    paddingBottom: 30,
+    paddingTop: 22,
+    paddingBottom: 0,
     width: 320,
     alignItems: 'center',
     backgroundColor: '#fff',
@@ -169,7 +153,8 @@ const styles = StyleSheet.create({
   },
   vidText: {
     padding: 20,
-    color: '#000'
+    color: '#000',
+    flex: 4
   },
   tabBar: {
     backgroundColor: '#fff',

@@ -15,8 +15,7 @@ export default class App extends React.Component {
 
 const RootStack = createStackNavigator(
   {
-    Home: HomeScreen,
-    Details: DetailsScreen,
+    Home: DetailsScreen,
     YouTubeVideo: YoutubeVideo,
   },
   {

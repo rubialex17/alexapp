@@ -1,29 +1,40 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import Orientation from 'react-native-orientation';
+
+import { StyleSheet, View, Text, Image} from 'react-native'
 import { StackNavigator } from 'react-navigation'
 import YouTube from 'react-native-youtube'
 import { YouTubeStandaloneIOS } from 'react-native-youtube';
+import { BackHandler } from 'react-native';
 
 class YouTubeVideo extends React.Component{
+
     static navigationOptions = {
-        headerTitle: 'YouTube',
+        headerTitle: 'Video',
         headerStyle: {
-            backgroundColor: '#000'
+            backgroundColor: '#e62117'
         }, 
         headerTitleStyle: {
             color: '#fff'
         }
     }
+    constructor(props) {
+        super(props)
+    }
+    componentDidMount(){   
+
+    }
 
     render() {
         return (
-          <View style={styles.container}>
+        <View style={styles.background}>
+          <View>
             <YouTube
                 videoId={this.props.navigation.state.params.youtubeId}   
                 play={true}             
-                fullscreen={true}       
+                fullscreen={false}       
                 loop={false}            
-                apiKey={'AIzaSyAKWtp_4IokzoKZu5u3mg00BC7FTia95z4'}
+                apiKey={''}
                 onReady={e => this.setState({ isReady: true })}
                 onChangeState={e => this.setState({ status: e.state })}
                 onChangeQuality={e => this.setState({ quality: e.quality })}
@@ -31,6 +42,13 @@ class YouTubeVideo extends React.Component{
                 style={{ alignSelf: 'stretch', height: 300 }}
             />
           </View>
+            <View style={styles.vidItems}>
+            <Image 
+                      source={this.props.navigation.state.params.imageUri}
+                      style={{width: 60, height: 60, borderRadius: 30, marginRight: 5, flex: 1}}/>
+                    <Text style={styles.vidText}>{this.props.navigation.state.params.videoTitle}</Text>
+            </View>
+            </View>
         )
     }
 }
@@ -38,10 +56,28 @@ class YouTubeVideo extends React.Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fff'
-    }
+    },
+    background: {
+        backgroundColor: '#fff',
+        flex: 1,
+    },
+    vidText: {
+        padding: 20,
+        color: '#000',
+        flex: 4,
+      },
+    vidItems: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        backgroundColor: '#fff',
+        borderBottomWidth: 0.6,
+        borderColor: '#aaa',
+        padding: 20
+      }
 })
+
 
 export default YouTubeVideo
