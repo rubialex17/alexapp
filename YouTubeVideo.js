@@ -1,6 +1,4 @@
 import React from 'react'
-import Orientation from 'react-native-orientation';
-
 import { StyleSheet, View, Text, Image} from 'react-native'
 import { StackNavigator } from 'react-navigation'
 import YouTube from 'react-native-youtube'
@@ -32,7 +30,7 @@ class YouTubeVideo extends React.Component{
             <YouTube
                 videoId={this.props.navigation.state.params.youtubeId}   
                 play={true}             
-                fullscreen={false}       
+                fullscreen={true}       
                 loop={false}            
                 apiKey={''}
                 onReady={e => this.setState({ isReady: true })}
@@ -45,7 +43,7 @@ class YouTubeVideo extends React.Component{
             <View style={styles.vidItems}>
             <Image 
                       source={this.props.navigation.state.params.imageUri}
-                      style={{width: 60, height: 60, borderRadius: 30, marginRight: 5, flex: 1}}/>
+                      style={{width: 40, height: 40, borderRadius: 20, marginRight: 5}}/>
                     <Text style={styles.vidText}>{this.props.navigation.state.params.videoTitle}</Text>
             </View>
             </View>
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
     vidItems: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         backgroundColor: '#fff',
         borderBottomWidth: 0.6,
         borderColor: '#aaa',

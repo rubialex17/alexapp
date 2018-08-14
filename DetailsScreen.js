@@ -15,7 +15,6 @@ import YouTubeVideo from './YouTubeVideo'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { createStackNavigator } from 'react-navigation';
-import Orientation from 'react-native-orientation';
 
 const apiKey = ''
 const results = 30
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
   vidItems: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     padding: 10
   },
   vidText: {
